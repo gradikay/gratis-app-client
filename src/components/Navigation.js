@@ -2,8 +2,6 @@
 // React required
 import React from "react";
 import { Link } from "react-router-dom"; 
-// Getting - user status (user login - true or false) - from useAppContext
-import { useAppContext } from "../libs/contextLib";
 // CSS
 import "../css/Navigation.css";
 // -------------- Application Begins Bellow -------------- \\

@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 import LoaderButton from "../components/LoaderButton";
 // Libs
 import { useFields } from "../libs/hooksLib";
-// Getting user status (user login - true or false) from useAppContext
-import { useAppContext } from "../libs/contextLib";
 // -------------- Application Begins Bellow -------------- \\
 
 // Main Function

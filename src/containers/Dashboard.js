@@ -1,6 +1,6 @@
 // This file is exported to ---> src/Routes.js
 // React required
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 // Amplify required 
 // Getting user status (user login - true or false) from useAppContext
@@ -116,7 +116,7 @@ function Posts(props) {
 
                     // Important variables
                     const { image1 } = post.images;
-                    const { postId, title, userId } = post;
+                    const { postId, title } = post;
 
                     // Return UI
                     return (
