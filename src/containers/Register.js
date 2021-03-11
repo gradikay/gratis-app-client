@@ -12,7 +12,7 @@ import { useFields } from "../libs/hooksLib";
 export default function Register() {
 
     // Important Variables 
-    const {newUser} = null;
+    const [newUser, setNewUser] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [fields, handleFieldChange] = useFields({
         email: "",
