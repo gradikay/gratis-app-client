@@ -82,7 +82,7 @@ export default function PostView() {
         };
 
     // Our clean up happens whenever the post "id" changes or leave the page
-    }, [id]); 
+    }, [id, post]); 
 
     // Return UI
     return (
@@ -159,19 +159,19 @@ function Carousel({ post }) {
                     {/* The slideshow - Start */} 
                     <div className="carousel-inner">
                         <div className="carousel-item active">
-                            <img src={img1} /> 
+                            <img alt="" src={img1} /> 
                         </div>
                         <div className="carousel-item">
-                            <img src={img2} /> 
+                            <img alt="" src={img2} /> 
                         </div>
                         <div className="carousel-item">
-                            <img src={img3} /> 
+                            <img alt="" src={img3} /> 
                         </div>
                         <div className="carousel-item">
-                            <img src={img4} /> 
+                            <img alt="" src={img4} /> 
                         </div>
                         <div className="carousel-item">
-                            <img src={img5} /> 
+                            <img alt="" src={img5} /> 
                         </div>
                     </div>
                     {/* The slideshow - End */}
