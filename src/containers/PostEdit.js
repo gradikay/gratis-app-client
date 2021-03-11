@@ -266,7 +266,7 @@ function Images() {
                 <div className="col-sm-12 image-container my-3 p-0"> 
 
                     <div className="card">
-                        <img src={img1} /> 
+                        <img alt="" src={img1} /> 
                     </div>
                 
                 </div>
@@ -276,7 +276,7 @@ function Images() {
                 <div className="col-sm-6 mb-3 p-0">
 
                     <div className="card">
-                        <img src={img2} />
+                        <img alt="" src={img2} />
                     </div>
 
                 </div>
@@ -286,7 +286,7 @@ function Images() {
                 <div className="col-sm-6 mb-3 p-0">
 
                     <div className="card">
-                        <img src={img3} />
+                        <img alt="" src={img3} />
                     </div>
 
                 </div>
@@ -296,7 +296,7 @@ function Images() {
                 <div className="col-sm-6 mb-3 p-0">
 
                     <div className="card">
-                        <img src={img4} />
+                        <img alt="" src={img4} />
                     </div>
 
                 </div>
@@ -306,7 +306,7 @@ function Images() {
                 <div className="col-sm-6 mb-3 p-0">
 
                     <div className="card">
-                        <img src={img5} />
+                        <img alt="" src={img5} />
                     </div>
 
                 </div>
@@ -447,7 +447,7 @@ function Preview(props) {
                 { /* Image - Start */}
                 <div className="col-md-12">
 
-                    <img src={img1} /> 
+                    <img alt="" src={img1} /> 
 
                 </div>
                 { /* Image - End */}
@@ -465,19 +465,19 @@ function Preview(props) {
 
                 { /* Images */}
                 <div className="col-md-3 mb-2">
-                    <img src={img1} />
+                    <img alt="" src={img1} />
                 </div>
                 <div className="col-md-3 mb-2">
-                    <img src={img2} />
+                    <img alt="" src={img2} />
                 </div>
                 <div className="col-md-3 mb-2">
-                    <img src={img3} />
+                    <img alt="" src={img3} />
                 </div>
                 <div className="col-md-3 mb-2">
-                    <img src={img4} />
+                    <img alt="" src={img4} />
                 </div>
                 <div className="col-md-3">
-                    <img src={img5} />
+                    <img alt="" src={img5} />
                 </div>
 
             </article>
