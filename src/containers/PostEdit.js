@@ -31,12 +31,6 @@ export default function PostEdit() {
     const [image4, setImage4] = useState(null);
     const [image5, setImage5] = useState(null);
 
-    image1;
-    image2;
-    image3;
-    image4;
-    image5;
-
 
     // Retreiving data from DynamoDB
     useEffect(() => {
@@ -164,9 +158,9 @@ export default function PostEdit() {
     // Returing UI
     return (
         <main id="PostEdit" className="container-fluid border-bottom border-secondary pb-5 p-0">
-
+            <div>{image1 + image2 + image3 + image4 + image5}</div>
             { /* Header - block & props - Start */}
-            <Header id={id}/>
+            <Header id={id} />
             { /* Header - block & props - End */}
 
             { /* Tabs - Start */}
