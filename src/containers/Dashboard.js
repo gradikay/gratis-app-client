@@ -126,7 +126,7 @@ function Posts(props) {
                             <div className="card border-0">
 
                                 { /* Image */}
-                                <img src={image1} />
+                                <img src={image1}c/>
 
                                 { /* Overlay - Start */}
                                 <div className="card-body p-0 bg-dark text-white">

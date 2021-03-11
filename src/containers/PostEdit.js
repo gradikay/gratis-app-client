@@ -31,6 +31,13 @@ export default function PostEdit() {
     const [image4, setImage4] = useState(null);
     const [image5, setImage5] = useState(null);
 
+    image1;
+    image2;
+    image3;
+    image4;
+    image5;
+
+
     // Retreiving data from DynamoDB
     useEffect(() => {
 
@@ -248,7 +255,7 @@ function Header({id}) {
 }
 
 // Images Block
-function Images(props) {
+function Images() {
 
     // Return UI
     return (
