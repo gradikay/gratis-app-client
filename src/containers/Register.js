@@ -48,7 +48,7 @@ export default function Register() {
         setIsLoading(true);
 
         try {
-
+            setNewUser(null);
             // Stop loading
             setIsLoading(false); 
 
