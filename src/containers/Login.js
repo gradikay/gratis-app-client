@@ -14,7 +14,6 @@ import { useAppContext } from "../libs/contextLib";
 export default function Login() {
 
     // Important Variables
-    const { userHasAuthenticated } = useAppContext();
     const [isLoading, setIsLoading] = useState(false);
     const [fields, handleFieldChange] = useFields({
         email: "",

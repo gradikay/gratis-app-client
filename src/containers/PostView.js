@@ -118,7 +118,7 @@ export default function PostView() {
 function Carousel({ post }) {
 
     // Important variables
-    const { userId, title } = post;
+    const { title } = post;
     // //Date
     const createdAt = new Date(post.createdAt);
     const published = createdAt.toLocaleString();
@@ -127,8 +127,6 @@ function Carousel({ post }) {
     // //Writer
     const { firstName, lastName } = post.user;
     const user = firstName + " " + lastName; 
-    // //Images
-    const { image1, image2, image3, image4, image5 } = post.images;
 
     // Return UI
     return (

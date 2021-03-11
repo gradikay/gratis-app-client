@@ -17,7 +17,6 @@ export default function App() {
     // Check if the user is logged in (true) or logged out (false)
     const [isAuthenticated, userHasAuthenticated] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(true);
-    const [user, setUser] = useState(null);
 
     // Retreiving user information from Cognito
     useEffect(() => {

@@ -14,9 +14,8 @@ import { data as dummyPosts } from "../DummyData/data";
 export default function Dashboard() {
 
     // Important variables 
-    const { isAuthenticated, userId, userEmail, userFirstName, userLastName} = useAppContext();
-    const [isLoading, setIsLoading] = useState(false);
-    const [posts, setPosts] = useState([]);
+    const { userId, userEmail, userFirstName, userLastName } = useAppContext();
+    const {isLoading } = false; 
 
     // Return UI
     return (

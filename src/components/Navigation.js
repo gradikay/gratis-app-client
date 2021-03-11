@@ -11,9 +11,6 @@ import "../css/Navigation.css";
 // Main Function
 export default function Navigation() {
 
-    // Important variables
-    const { isAuthenticated, userHasAuthenticated } = useAppContext(); 
-
     // Handling Logout
     async function handleLogout() { 
 

@@ -14,8 +14,7 @@ import { useAppContext } from "../libs/contextLib";
 export default function Register() {
 
     // Important Variables 
-    const [newUser, setNewUser] = useState(null);
-    const { userHasAuthenticated } = useAppContext();
+    const {newUser} = null;
     const [isLoading, setIsLoading] = useState(false);
     const [fields, handleFieldChange] = useFields({
         email: "",

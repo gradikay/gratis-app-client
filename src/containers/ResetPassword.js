@@ -12,10 +12,10 @@ import { useAppContext } from "../libs/contextLib";
 
 // Main Function
 export default function ResetPassword() {
-   
+
     // Important Variables
     const [isLoading, setIsLoading] = useState(false);
-    const [sentRequest, setSentRequest] = useState(null);
+    const {sentRequest} = null;
     const { userHasAuthenticated } = useAppContext();
     const [fields, handleFieldChange] = useFields({
         email: "",

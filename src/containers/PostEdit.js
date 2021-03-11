@@ -250,13 +250,6 @@ function Header({id}) {
 // Images Block
 function Images(props) {
 
-    // Important variables
-    const {
-         
-        userId
-
-    } = props; 
-
     // Return UI
     return (
         <div className="col-sm-4">
@@ -426,7 +419,6 @@ function Preview(props) {
 
         user,
         title,
-        userId,
         description,
 
     } = props;
