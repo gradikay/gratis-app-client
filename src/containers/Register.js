@@ -2,17 +2,15 @@
 // React required
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// Amplify required
-import { Auth } from "aws-amplify";
 // Components
 import LoaderButton from "../components/LoaderButton";
 // Libs
 import { useFields } from "../libs/hooksLib";
-// Setting up - user status (user login - true) - for useAppContext
-import { useAppContext } from "../libs/contextLib"; 
-// -------------- Application Begins Bellow ------------ //
+// Getting user status (user login - true or false) from useAppContext
+import { useAppContext } from "../libs/contextLib";
+// -------------- Application Begins Bellow -------------- \\
 
-// Main Application
+// Main Function
 export default function Register() {
 
     // Important Variables 
@@ -28,7 +26,7 @@ export default function Register() {
         confirmationCode: ""
     });
 
-    // Enabling submit button when all fields are filled
+    // Validating function : enable submit button when our inputs are filled
     function validateForm() {
         return (
             fields.email.length > 0 &&
@@ -39,7 +37,7 @@ export default function Register() {
         );
     }
 
-    // Validating confirmation form
+    // Validating confirmation form : enable submit button when our input is filled
     function validateConfirmationForm() {
         return fields.confirmationCode.length > 0;
     }
@@ -49,32 +47,20 @@ export default function Register() {
 
         event.preventDefault();
 
+        // Start loading
         setIsLoading(true);
 
         try {
 
-            // Sending data to AWS Cognito via Amplify - Auth.signUp
-            const newUser = await Auth.signUp({
-                username: fields.email,
-                password: fields.password,
-                attributes: { 
-                    given_name: fields.firstName,
-                    family_name: fields.lastName,
-                    email: fields.email,
-                    phone_number: "",
-                    updated_at: "",
-                    zoneinfo: "",
-                    locale: "",
-                    address: ""
-                }
-            });
-
-            setNewUser(newUser);
+            // Stop loading
             setIsLoading(false); 
 
         } catch (e) {
 
+            // Error Handling
             alert(e.message);
+
+            // Stop loading
             setIsLoading(false);
 
         }
@@ -86,18 +72,19 @@ export default function Register() {
 
         event.preventDefault();
 
+        // Start loading
         setIsLoading(true);
 
         try {
-
-            await Auth.confirmSignUp(fields.email, fields.confirmationCode);
-            await Auth.signIn(fields.email, fields.password);
-             
-            userHasAuthenticated(true);
+            // Stop loading
+            setIsLoading(false); 
 
         } catch (e) {
 
+            // Error Handling
             alert(e.message);
+
+            // Stop loading
             setIsLoading(false);
 
         }
@@ -107,7 +94,7 @@ export default function Register() {
     // Return UI
     return (
 
-        <div id="Signup" className="bg-white border-bottom">
+        <div id="Signup" className=" text-white border-bottom border-secondary">
 
             {
                 newUser === null ?
@@ -124,7 +111,8 @@ export default function Register() {
                         handleFieldChange={handleFieldChange}
                         confirmPassword={fields.confirmPassword}
                     />
-                    :
+
+                    : // else
 
                     // Render confirmation form
                     <RenderConfirmationForm
@@ -140,9 +128,8 @@ export default function Register() {
     );
 }
 
-// First, let collect users' information
+// RenderForm Block - First, let collect users' information
 function RenderForm(props) {
-
 
     // Important variables
     const {
@@ -162,13 +149,25 @@ function RenderForm(props) {
 
     // Return UI
     return (
-        <main className="Signup container-fluid bg-white py-3 border-top">
+        <main className="Signup container-fluid py-3">
             <div className="row">
 
                 { /* Header - Start */}
-                <header className="col-md-9 text-center border-bottom mb-3 mx-auto">
-                    <h1>Larissa</h1>
-                    <p>Already a member? <Link to="/login">Login here!</Link> </p>
+                <header className="col-md-9 text-center border-bottom border-secondary mb-3 mx-auto">
+
+                    { /* Title */}
+                    <h1>Gratis</h1>
+
+                    { /* Already a member? - Start */}
+                    <p>
+                        <span> Already a member? </span>
+                        <Link className="text-warning" to="/login">
+                            <span> Login here </span>
+                            <span role="img" aria-label="login"> &#128514; </span>
+                        </Link>
+                    </p>
+                    { /* Already a member? - End */}
+
                 </header>
                 { /* Header - End */}
 
@@ -190,6 +189,7 @@ function RenderForm(props) {
                                 className="form-control"
                                 autoComplete="given-name"
                                 onChange={handleFieldChange}
+                                placeholder="Enter First Name"
                             />
                         </div>
                         { /* First Name - End */}
@@ -206,6 +206,7 @@ function RenderForm(props) {
                                 className="form-control"
                                 autoComplete="family-name"
                                 onChange={handleFieldChange}
+                                placeholder="Enter Last Name"
                             />
                         </div>
                         { /* Last Name - End */}
@@ -221,6 +222,7 @@ function RenderForm(props) {
                                 required="required"
                                 autoComplete="email"
                                 className="form-control"
+                                placeholder="Enter Email"
                                 onChange={handleFieldChange}
                             />
                         </div>
@@ -238,7 +240,9 @@ function RenderForm(props) {
                                 className="form-control"
                                 autoComplete="new-password"
                                 onChange={handleFieldChange}
+                                placeholder="Enter Password"
                             />
+                            <p><small>* Required numbers, a special character, uppercase letters, & lowercase letters</small></p>
                         </div>
                         { /* Password - End */}
 
@@ -254,6 +258,7 @@ function RenderForm(props) {
                                 className="form-control"
                                 autoComplete="new-password"
                                 onChange={handleFieldChange}
+                                placeholder="Confirm Entered Password"
                             />
                         </div>
                         { /* Confirm Password - End */}
@@ -264,7 +269,7 @@ function RenderForm(props) {
                             type="submit"
                             isLoading={isLoading}
                             disabled={!validateForm()}
-                            className="btn btn-primary d-block my-3"
+                            className="btn btn-warning d-block my-3"
                         >
                             Register
                         </LoaderButton>
@@ -273,16 +278,55 @@ function RenderForm(props) {
                     </form>
                     { /* Form - End */} 
 
-                    { /* Footer - Start */}
-                    <footer className="p-2  w-100 border-top">
-                        <p className="border-bottom pb-3">
-                            <mdall>By registering, you agree to Larissa's <a href="#">Terms of Service</a> and <a href="#">Privacy Notice</a>.</mdall>
+                    { /* Lower Section - Start */}
+                    <section className="p-2 border-top border-secondary">
+
+                        {/* Paragraph - Start */}
+                        <p className="border-bottom border-secondary pb-3">
+                            <small>
+
+                                <span> By signing in, you agree to Gratis's </span>
+
+                                {/* Terms - Start */}
+                                <a className="text-warning" href="#n"> Terms of Service
+                                    <span role="img" aria-label="confused"> &#128534; </span>
+                                </a>
+                                {/* Terms - End */}
+
+                                <span> and </span>
+
+                                {/* Privacy Notice - Start */}
+                                <a className="text-warning" href="#n"> Privacy Notice
+                                    <span role="img" aria-label="zipit"> &#129296; </span>
+                                </a>
+                                {/* Privacy Notice - End */}
+
+                                <span>.</span>
+
+                            </small>
                         </p>
-                        <Link to="/reset"> Forgot password? </Link>
+                        {/* Paragraph - End */}
+
+                        {/* Forget Password - Start */}
+                        <Link className="text-warning" to="/reset">
+                            <span> Forgot password? </span>
+                            <span role="img" aria-label="afraid"> &#128561; </span>
+                        </Link>
+                        {/* Forget Password - End */}
+
                         <span> | </span>
-                        <Link to="/confirmation"> ( I have a verification code ) </Link>
-                    </footer>
-                    { /* Footer - End */}
+
+                        {/* Verification Code - Start */}
+                        <span> ( </span>
+                        <Link className="text-warning" to="/confirmation">
+                            <span> I have a verification code </span>
+                            <span role="img" aria-label="tongue out"> &#128540; </span>
+                        </Link>
+                        <span> ) </span>
+                        {/* Verification Code - End */}
+
+                    </section>
+                    { /* Lower Section - End */}
 
                 </section>
                 { /* Body - End */}
@@ -292,7 +336,7 @@ function RenderForm(props) {
     );
 }
 
-// Then, we send them a confirmation code and render the input field
+// RenderConfirmationForm Block - Then, we send them a confirmation code and render the input field
 function RenderConfirmationForm(props) {
 
     // Important variables
@@ -309,12 +353,12 @@ function RenderConfirmationForm(props) {
 
     //Return UI
     return (
-        <main className="Signup container-fluid bg-white pt-3 pb-5 vh-100">
+        <main className="Signup container-fluid  pt-3 pb-5 vh-100">
             <div className="row">
 
                 { /* Header - Start */}
-                <header className="col-md-10 text-center border-bottom mb-3 mx-auto">
-                    <h1>Larissa</h1> 
+                <header className="col-md-10 text-center border-bottom border-secondary mb-3 mx-auto">
+                    <h1>Gratis</h1> 
                     <p>Please, check your email for a confirmation code! </p>
                 </header>
                 { /* Header - End */}
@@ -347,7 +391,7 @@ function RenderConfirmationForm(props) {
                             block
                             type="submit"
                             isLoading={isLoading}
-                            className="btn-primary d-block my-3"
+                            className="btn-warning d-block my-3"
                             disabled={!validateConfirmationForm()}
                         >
                             Verify
@@ -357,16 +401,35 @@ function RenderConfirmationForm(props) {
                     </form>
                     { /* Form - End */}
 
-
                     { /* Lower Section - Start */}
-                    <section className="p-2 border-top">
-                        <p className="border-bottom pb-3">
-                            <small>By using this application, you agree to Larissa's <a href="#">Terms of Service</a> and <a href="#">Privacy Notice</a>. </small>
-                        </p>
+                    <section className="p-2 border-top border-secondary">
 
-                        <a href="/login"> Login </a>
-                        <span> | </span>
-                        <a href="/register"> Register instead! </a>
+                        { /* Paragraph - Start */}
+                        <p className="border-bottom border-secondary pb-3">
+                            <small>
+
+                                <span> By signing in, you agree to Gratis's </span>
+
+                                {/* Terms - Start */}
+                                <a className="text-warning" href="#n"> Terms of Service
+                                    <span role="img" aria-label="confused"> &#128534; </span>
+                                </a>
+                                {/* Terms - End */}
+
+                                <span> and </span>
+
+                                {/* Privacy Notice - Start */}
+                                <a className="text-warning" href="#n"> Privacy Notice
+                                    <span role="img" aria-label="zipit"> &#129296; </span>
+                                </a>
+                                {/* Privacy Notice - End */}
+
+                                <span>.</span>
+
+                            </small>
+                        </p>
+                        { /* Paragraph - End */}
+
                     </section>
                     { /* Lower Section - End */}
 

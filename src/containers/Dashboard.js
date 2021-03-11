@@ -1,68 +1,22 @@
 // This file is exported to ---> src/Routes.js
 // React required
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// Amplify required
-import { API } from "aws-amplify";
-import { S3Image } from 'aws-amplify-react'; 
+// Amplify required 
+// Getting user status (user login - true or false) from useAppContext
 import { useAppContext } from "../libs/contextLib";
 // CSS
-import "../css/Dashboard.css"
-// -------------- Application Begins Bellow ------------ //
+import "../css/Dashboard.css";
+import { data as dummyPosts } from "../DummyData/data";
+// -------------- Application Begins Bellow -------------- \\
 
-// Main Application
+// Main Function
 export default function Dashboard() {
 
     // Important variables 
-    const { isAuthenticated, userId, userEmail, userFirstName, signedupDate, userLastName} = useAppContext();
+    const { isAuthenticated, userId, userEmail, userFirstName, userLastName} = useAppContext();
     const [isLoading, setIsLoading] = useState(false);
     const [posts, setPosts] = useState([]);
-
-    // Retreiving data from database
-    useEffect(() => {
-
-        // Cleanup variable
-        let unmounted = false;
-
-        async function onLoad() {
-
-            setIsLoading(true);
-
-            // Loading products from Dynamodb
-            function loadPosts() {
-                // Note: "posts" is the [API] -> [endpoint] -> [name] in src -> index.js
-                return API.get("posts", "/posts");
-            } 
-
-            try {
-
-                // Important variable
-                const posts = await loadPosts();
-
-                if (!unmounted) {
-                    // Saving retreived data into posts variable
-                    setPosts(posts);
-                }
-
-                setIsLoading(false);
-
-            } catch (e) {
-                alert(e);
-                setIsLoading(false);
-            }
-
-        }
-
-        // Return onLoad function
-        onLoad();
-
-        // Avoid data leaks by cleaning up useEffect : unmounted
-        return () => {
-            unmounted = true;
-            setPosts([]);
-        };
-
-    }, [isAuthenticated]);
 
     // Return UI
     return (
@@ -72,22 +26,21 @@ export default function Dashboard() {
             <Header
                 userId={userId}
                 userEmail={userEmail}
-                userFirstName={userFirstName}
-                signedupDate={signedupDate}
+                posts={dummyPosts}
                 userLastName={userLastName} 
-                posts={posts && posts}
+                userFirstName={userFirstName}
             /> 
             {/* Header - End */}
 
             {/* Posts - Start */}
-            <Posts posts={posts} isLoading={isLoading} /> 
+            <Posts posts={dummyPosts} isLoading={isLoading} /> 
             {/* Posts - End */}
 
         </main>
     );
 }
 
-// Header
+// Header Block
 function Header(props) {
 
     // Important variables 
@@ -95,104 +48,141 @@ function Header(props) {
 
     // Return UI
     return (
-        <header className="container-fluid border-bottom py-3 bg-light">
+        <header className="container-fluid border-bottom border-warning py-3 text-white">
             <div className="row justify-content-center align-items-center">
+
+                {/* Title & Add Post Link - Start */}
                 <div className="col-sm-3 text-center">
+
+                    {/* Title */}
                     <h1>Dashboard </h1>
-                    <Link to="/postnew" className="btn btn-warning"> + NEW POST <i className="fa fa-share"></i></Link> 
+
+                    {/* Add Post Link - Start */}
+                    <Link to="/postnew" className="btn btn-warning">
+
+                        {/* Title */}
+                        <span>+ ADD POST </span>
+
+                        {/* Icon */}
+                        <i className="fa fa-share"></i>
+
+                    </Link> 
+                    {/* Add Post Link - End */}
+
                 </div>
+                {/* Title & Add Post Link - End */}
+
+                {/* User Id & Post Count - Start */}
                 <div className="col-sm-3">
                     <ul className="list-group list-group-flush"> 
-                        <li className="list-group-item bg-light">User Id: {userId} </li>
-                        <li className="list-group-item bg-light">Post Count: { posts.length}</li>
+                        <li className="list-group-item bg-dark border-secondary">User Id: {userId} </li>
+                        <li className="list-group-item bg-dark border-secondary">Post Count: { posts.length} </li>
                     </ul>
                 </div>
+                {/* User Id & Post Count - End */}
+
+                {/* User Names & Email - Start */}
                 <div className="col-sm-3">
                     <ul className="list-group list-group-flush"> 
-                        <li className="list-group-item bg-light">First Name: {userFirstName} </li> 
-                        <li className="list-group-item bg-light">Last Name: {userLastName}</li>
-                        <li className="list-group-item bg-light">Email: {userEmail}</li>
+                        <li className="list-group-item bg-dark border-secondary">First Name: {userFirstName} </li> 
+                        <li className="list-group-item bg-dark border-secondary">Last Name: {userLastName} </li>
+                        <li className="list-group-item bg-dark border-secondary">Email: {userEmail} </li>
                     </ul>
                 </div>
+                {/* User Names & Email - End */}
+
             </div>
         </header>
         );
 }
 
-// User Posts Function
-function Posts({ posts, isLoading }) {
+// User Posts Block
+function Posts(props) {
+
+    // Important variables 
+    const { posts, isLoading } = props
 
     // Return UI
     return (
         <div className="container row mx-auto py-5">
-            {!isLoading ?
 
-                // Display after we have loaded our data
+            {/* Posts - Start 
+              * - With - !isLoading && posts, we want to only return data if we have any
+              * - If we don't have data and omit "&& posts" we will get an error!
+              */}
+            {!isLoading && posts ?
+
+                // Display after we have loaded our posts
                 posts.map((post, i) => {
-
 
                     // Important variables
                     const { image1 } = post.images;
-                    const { streetState, streetCity } = post.address;
-                    const { postId, userId, postStatus } = post;
-                    const convertDate = new Date(post.createdAt);
-                    const postedOn = convertDate.toDateString();
-                    const price = Number(post.postPrice).toLocaleString();
-
+                    const { postId, title, userId } = post;
 
                     // Return UI
                     return (
-                        <div className="col-sm-6 col-md-4 text-white p-2" key={i++}>
+                        <div className="col-md-6 col-lg-4 p-3 border border-secondary" key={i++}> 
 
-                            <div className="card shadow-sm">
+                            { /* Card - Start */}
+                            <div className="card border-0">
 
-                                { /* Image - Start */}
-                                <S3Image level="protected" identityId={userId} imgKey={image1} />
-                                { /* Image - End */}
-                                 
+                                { /* Image */}
+                                <img src={image1} />
+
                                 { /* Overlay - Start */}
-                                <div className="card-img-overlay">
+                                <div className="card-body p-0 bg-dark text-white">
 
-                                    { /* Top Overlay */}
-                                    <div className="overlay-top">
-                                        <span className="badge badge-primary rounded">
-                                            {postStatus} - {postedOn}
-                                        </span>
-                                    </div>
+                                    <p className="p-0 m-0" style={{ fontSize: "1.3rem" }}><b>{title}</b></p>
 
-                                    { /* Bottom Overlay */}
-                                    <div className="overlay-bottom">
-                                        <p className="m-0"><small>{streetCity}, {streetState}</small></p>
-                                        <p className="m-0"><b>${price}</b></p>
-                                    </div>
-
-                                </div> 
-                                { /* Overlay - End */} 
-
-                                { /* Body card - Start */} 
-                                <div className="card-body bg-white text-center">
-                                    <div className="btn-group" style={{ zIndex: "1" }}>  
-
-                                        <Link to={`/postedit/${postId}`} className="btn btn-danger">
-                                            <i className="fa fa-minus-square"></i> Edit
-                                        </Link>  
-
-                                        <Link to={`/view/${postId}`} className="btn btn-info">
-                                            <i className="fa fa-external-link-square"></i> View
-                                        </Link>  
-                                    </div>
                                 </div>
-                                { /* Body card - End */} 
+                                { /* Overlay - End */}
+
+                            </div> 
+                            { /* Card - End */}
+
+                            { /* View & Edit Buttons - Start */}
+                            <div className="mt-3">
+
+                                { /* View Button - Start */}
+                                <a href={`/view/${postId}`} className="btn btn-outline-warning mr-3">
+
+                                    { /* Icon */}
+                                    <i className="fa fa-low-vision" role="img" aria-label="view"></i>
+
+                                    { /* Title */}
+                                    <span> View </span>
+
+                                </a>
+                                { /* View Button - End */}
+
+                                { /* Edit Button - Start */}
+                                <a href={`/postedit/${postId}`} className="btn btn-outline-danger">
+
+                                    { /* Icon */}
+                                    <i className="fa fa-edit" role="img" aria-label="edit"></i>
+
+                                    { /* Title */}
+                                    <span> Edit </span>
+
+                                </a> 
+                                { /* Edit Button - End */}
 
                             </div>
+                            { /* View & Edit Buttons - End */}
 
                         </div>
                     );
                 })
-                    :
-                // Display while Loading data
-                "Loading"
-            }           
+
+                : // else
+
+                // When the posts is loading display
+                <div className="vh-100 d-flex justify-content-center align-items-center bg-dark text-white">
+                    <span className="spinner-border" aria-label="spinner" role="img"></span>
+                </div>
+            }
+            {/* Posts - End */}
+            
         </div>
         );
 } 

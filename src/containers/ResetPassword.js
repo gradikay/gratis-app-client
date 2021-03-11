@@ -1,17 +1,16 @@
 // This file is exported to ---> src/Routes.js
 // React required
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 // Components
 import LoaderButton from "../components/LoaderButton";
-// Amplify required
-import { Auth } from "aws-amplify";
 // Libs
 import { useFields } from "../libs/hooksLib";
-// Getting - user status (user login - true or false) - from useAppContext
-import { useAppContext } from "../libs/contextLib"; 
-// -------------- Application Begins Bellow ------------ //
+// Getting user status (user login - true or false) from useAppContext
+import { useAppContext } from "../libs/contextLib";
+// -------------- Application Begins Bellow -------------- \\
 
-// Main Application
+// Main Function
 export default function ResetPassword() {
    
     // Important Variables
@@ -28,12 +27,12 @@ export default function ResetPassword() {
         confirmationCode: ""
     });
 
-    // Validating Email function
+    // Validating email function : enable submit button when our inputs are filled
     function validateEmail() {
         return fields.email.length > 0;
     }
 
-    // Validating Confirmation form function
+    // Validating confirmation form function : enable submit button when our inputs are filled
     function validateConfirmationForm() {
         return fields.password.length > 0 &&
             fields.password === fields.confirmPassword;
@@ -43,19 +42,21 @@ export default function ResetPassword() {
     async function handleSubmitSendResetCode(event) {
 
         event.preventDefault();
+
+        // Start loading
         setIsLoading(true);
 
         try {
 
-            // Amplify's Auth.forgotPassword : Check AWS cognito for submitted email 
-            const sentRequest = await Auth.forgotPassword(fields.email)
-
+            // Stop loading
             setIsLoading(false);
-            setSentRequest(sentRequest);
 
         } catch (e) {
 
+            // Error Handling
             alert(e.message);
+
+            // Stop loading
             setIsLoading(false);
 
         }
@@ -65,20 +66,21 @@ export default function ResetPassword() {
     async function handleSubmitResetPassword(event) {
 
         event.preventDefault();
+
+        // Start loading
         setIsLoading(true);
 
         try {
-
-            // Getting user new password and email
-            await Auth.forgotPasswordSubmit(fields.email, fields.confirmationCode, fields.password)
-            // Then Sign in the user
-            await Auth.signIn(fields.email, fields.password);
-            
-            userHasAuthenticated(true); 
+                        
+            // Setting userHasAuthenticated to "True" in userAppContext()
+            userHasAuthenticated(true);
 
         } catch (e) {
 
+            // Error Handling
             alert(e.message);
+
+            // Stop loading
             setIsLoading(false);
 
         }
@@ -86,12 +88,12 @@ export default function ResetPassword() {
 
     // Return UI
     return (
-        <div className="Signup bg-white">
+        <div className="Signup ">
             {
                 /* Checking if the user has submitted an email address */
-                sentRequest === null
-                    ?
-                    // Render Email Field
+                sentRequest === null ?
+
+                // Render Email Field
                 <RenderEmailField
                     email={fields.email}
                     isLoading={isLoading}
@@ -99,13 +101,14 @@ export default function ResetPassword() {
                     handleFieldChange={handleFieldChange}
                     handleSubmitSendResetCode={handleSubmitSendResetCode}
                 />
-                    :
-                    // Render Password Field
+                    : // else
+
+                 // Render Password Field
                 <RenderResetPasswordField
                         password={fields.password}
                         isLoading={isLoading}
-                        confirmPassword={fields.confimPassword}
                         handleFieldChange={handleFieldChange}
+                        confirmPassword={fields.confimPassword}
                         confirmationCode={fields.confirmationCode}
                         validateConfirmationForm={validateConfirmationForm}
                         handleSubmitResetPassword={handleSubmitResetPassword}
@@ -116,7 +119,7 @@ export default function ResetPassword() {
 }
 
 
-// First, We get the user email 
+// RenderEmailField Block - First, We get the user email
 function RenderEmailField(props) {
 
     // Important variables
@@ -130,14 +133,14 @@ function RenderEmailField(props) {
 
     } = props;
 
-
+    // Return UI
     return (
-        <main className="Signup container-fluid bg-white py-3 vh-100 border-bottom">
+        <main className="Signup container-fluid text-white py-3 vh-100 border-bottom">
             <div className="row">
 
                 { /* Header - Start */}
                 <header className="col-sm-9 text-center border-bottom mb-3 mx-auto">
-                    <h1>Larissa</h1>
+                    <h1>Gratis</h1>
                     <p>Please, Verify your email bellow!</p>
                 </header>
                 { /* Header - End */}
@@ -170,7 +173,7 @@ function RenderEmailField(props) {
                             type="submit"
                             isLoading={isLoading}
                             disabled={!validateEmail()}
-                            className="btn-primary d-block my-3"
+                            className="btn-warning d-block my-3"
                         >
                             Send
                             </LoaderButton>
@@ -180,14 +183,43 @@ function RenderEmailField(props) {
                     { /* Form - End */}
 
                     { /* Lower Section - Start */}
-                    <section className="p-2 border-top">
-                        <p className="border-bottom pb-3">
-                            <small>By using this application, you agree to Larissa's <a href="#">Terms of Service</a> and <a href="#">Privacy Notice</a>. </small>
-                        </p>
+                    <section className="p-2 border-top border-secondary">
 
-                        <a href="/login"> Login </a>
-                        <span> | </span>
-                        <a href="/register"> Register instead! </a>
+                        {/* Paragraph - Start */}
+                        <p className="border-bottom border-secondary pb-3">
+                            <small>
+
+                                <span> By signing in, you agree to Gratis's </span>
+
+                                {/* Terms - Start */}
+                                <a className="text-warning" href="#n"> Terms of Service
+                                    <span role="img" aria-label="confused"> &#128534; </span>
+                                </a>
+                                {/* Terms - End */}
+
+                                <span> and </span>
+
+                                {/* Privacy Notice - Start */}
+                                <a className="text-warning" href="#n"> Privacy Notice
+                                    <span role="img" aria-label="zipit"> &#129296; </span>
+                                </a>
+                                {/* Privacy Notice - End */}
+
+                                <span>.</span>
+
+                            </small>
+                        </p> 
+                        {/* Paragraph - End */}
+
+                        {/* Verification Code - Start */}
+                        <span> ( </span>
+                        <Link className="text-warning" to="/confirmation">
+                            <span> I have a verification code </span>
+                            <span role="img" aria-label="tongue out"> &#128540; </span>
+                        </Link>
+                        <span> ) </span>
+                        {/* Verification Code - End */}
+
                     </section>
                     { /* Lower Section - End */}
 
@@ -200,7 +232,7 @@ function RenderEmailField(props) {
 }
 
 
-// If the user exist, Let them reset the password
+// RenderResetPasswordField Block - If the user exist, Let them reset the password
 function RenderResetPasswordField(props) {
 
     // Important variables
@@ -216,16 +248,16 @@ function RenderResetPasswordField(props) {
 
     } = props;
 
-
+    // Return UI
     return (
         <>
-            <main className="Signup container-fluid bg-white pt-3 pb-5 border-bottom">
+            <main className="Signup container-fluid  pt-3 pb-5 border-bottom border-secondary text-white">
                 <div className="row">
 
                     { /* Header - Start */}
-                    <header className="col-sm-9 text-center border-bottom mb-3 mx-auto">
-                        <h1>Larissa</h1> 
-                        <p>Please, Check your email for a confirmation code!</p>
+                    <header className="col-sm-9 text-center border-bottom border-secondary mb-3 mx-auto">
+                        <h1>Gratis</h1> 
+                        <p>Please, Check your email for a confirmation code! <span role="img" aria-label="email"> &#128140; </span></p>
                     </header>
                     { /* Header - End */}
 
@@ -235,7 +267,7 @@ function RenderResetPasswordField(props) {
                         { /* Form - Start */}
                         <form onSubmit={handleSubmitResetPassword}>
 
-                            { /* Pass Code - Start */}
+                            { /* Confirmation Code - Start */}
                             <div className="form-group">
                                 <label aria-label="confirmationCode">Confirmation Code</label>
                                 <input
@@ -250,9 +282,9 @@ function RenderResetPasswordField(props) {
                                 />
                             </div>
                             <span><small>Enter your confirmation code and reset your password!</small></span>
-                            { /* Pass Code - Start */}
+                            { /* Confirmation Code - End */}
 
-                            <hr />
+                            <hr className="border-secondary" />
 
                             { /* Password - Start */}
                             <div className="form-group">
@@ -264,6 +296,7 @@ function RenderResetPasswordField(props) {
                                     value={password}
                                     required="required"
                                     className="form-control"
+                                    placeholder="Enter New Password"
                                     onChange={handleFieldChange}
                                 />
                             </div>
@@ -279,6 +312,7 @@ function RenderResetPasswordField(props) {
                                     name="confirmPassword"
                                     value={confirmPassword}
                                     className="form-control"
+                                    placeholder="Confirm New Password"
                                     onChange={handleFieldChange}
                                 />
                             </div>
@@ -289,7 +323,7 @@ function RenderResetPasswordField(props) {
                                 block
                                 type="submit"
                                 isLoading={isLoading}
-                                className="btn-primary d-block my-3"
+                                className="btn-warning d-block my-3"
                                 disabled={!validateConfirmationForm()}
                             >
                                 Update & Login

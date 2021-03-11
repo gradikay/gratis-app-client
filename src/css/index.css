@@ -25,3 +25,6 @@ input[type=file] {
 img {
     width: 100%;
 }
+.bg-dark {
+    background-color: #1c1f23 !important;
+}

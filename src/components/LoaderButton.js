@@ -3,10 +3,12 @@
 import React from "react";
 // CSS
 import "../css/LoaderButton.css";
-// -------------- Application Begins Bellow ------------ //
+// -------------- Application Begins Bellow -------------- \\
 
-
+// Main Function
 export default function LoaderButton({ isLoading, className = "", disabled = false, ...props }) {
+
+    // Return UI
     return (
         <button
             className={`LoaderButton btn ${className}`}

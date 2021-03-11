@@ -2,7 +2,7 @@
 import { useState } from "react";
 // -------------- Application Begins Bellow ------------ //
 
-// This is a Customer Hook
+// This is a Custom Hook
 export function useFields(initialState) {
     const [fields, setValues] = useState(initialState);
 

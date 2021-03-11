@@ -2,10 +2,9 @@
 // React required
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-// Getting - user status (user login - true or false) - from useAppContext
+// Getting user status (user login - true or false) from useAppContext
 import { useAppContext } from "../libs/contextLib";
-// -------------- Application Begins Bellow ------------ //
-
+// -------------- Application Begins Bellow -------------- \\
 
 function querystring(name, url = window.location.href) {
     name = name.replace(/[[]]/g, "\\$&");
@@ -25,8 +24,9 @@ function querystring(name, url = window.location.href) {
 
 // Link available to Public (not Logged In) users
 // before (route):       <Route path="/login" exact component={Login}/>
-// after (custom route): <UnauthenticatedRoute path="/login" exact component={Login} appProps={appProps}/> 
+// after (custom route): <UnauthenticatedRoute path="/login" exact component={Login} /> 
 
+// Main Function
 export default function UnauthenticatedRoute({ children, ...rest }) {
     const { isAuthenticated } = useAppContext();
     const redirect = querystring("redirect");

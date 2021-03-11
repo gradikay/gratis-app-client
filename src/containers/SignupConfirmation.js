@@ -1,15 +1,13 @@
 // This file is exported to ---> src/Routes.js
 // React required
 import React, { useState } from "react";
-// Amplify required
-import { Auth } from "aws-amplify";
 // Components
 import LoaderButton from "../components/LoaderButton";
 // Libs
 import { useFields } from "../libs/hooksLib"; 
-// -------------- Application Begins Bellow ------------ //
+// -------------- Application Begins Bellow -------------- \\
 
-// Main Application
+// Main Function
 export default function SignupConfirmation(props) {
 
     // Important variables
@@ -24,37 +22,43 @@ export default function SignupConfirmation(props) {
         confirmationCode: ""
     });
 
-    // Validating Confirmation form function
+    // Validating Confirmation form function : enable submit button when our input is filled
     function validateConfirmationForm() {
         return fields.confirmationCode.length > 0;
     }
 
-    // Handling submitted verification code : This is exectuted first
-    async function handleConfirmationSubmitAfter(event) {
+    // Handling submitted verification code
+    async function handleConfirmationSubmit(event) {
+
         event.preventDefault();
-        //setMessage = ""
+
+        // Start loading
         setIsLoading(true);
 
         try {
-
-            await Auth.confirmSignUp(fields.email, fields.confirmationCode);
 
             // Redirect to login
             props.history.push("/login");
 
         } catch (e) {
+
+            // Error Handling
             alert(e.message);
+
+            // Stop loading
             setIsLoading(false);
         }
     }
+
+    // Return UI
     return (
-        <main className="Signup container bg-white py-3 vh-100">
+        <main className="Signup container text-white py-3 vh-100">
             <div className="row">
 
                 { /* Header - Start */}
                 <header className="col-sm-12 text-center border-bottom mb-3">
-                    <h1>Larissa</h1>
-                    <p>Thank you for joining Larissa! <span role="img" aria-label="thumbs up">&#128077;</span><span role="img" aria-label="dark skin">&#127998;</span> </p>
+                    <h1>Gratis</h1>
+                    <p>Thank you for joining Gratis! <span role="img" aria-label="star"> &#129321; </span> </p>
                 </header>
                 { /* Header - End */}
 
@@ -62,37 +66,38 @@ export default function SignupConfirmation(props) {
                 <section className="col-sm-4 mx-auto">
 
                     { /* Form - Start */}
-                    <form onSubmit={handleConfirmationSubmitAfter}>
+                    <form onSubmit={handleConfirmationSubmit}>
 
                         { /* Email - Start */}
                         <div className="form-group">
                             <label aria-label="email">E-mail</label>
                             <input
-                                value={fields.email}
-                                onChange={handleFieldChange}
-                                type="email"
-                                className="form-control"
-                                name="email"
                                 id="email"
+                                type="email"
+                                name="email"
                                 required="required"
+                                value={fields.email}
                                 autoComplete="email"
+                                className="form-control"
+                                placeholder="Enter Email"
+                                onChange={handleFieldChange}
                             />
                         </div>
                         { /* Email - End */}
 
                         { /* Confimation Code - Start */}
                         <div className="form-group">
-                            <label aria-label="congirmationCode">Confirmation Code</label>
+                            <label aria-label="confirmationCode">Confirmation Code</label>
                             <input
-                                value={fields.confirmationCode}
-                                onChange={handleFieldChange}
                                 type="tel"
-                                className="form-control"
-                                name="congirmationCode"
-                                id="congirmationCode"
-                                required="required"
                                 autoComplete="on"
+                                required="required"
+                                id="confirmationCode"
+                                name="confirmationCode"
+                                className="form-control"
                                 placeholder="Code - 000000"
+                                onChange={handleFieldChange}
+                                value={fields.confirmationCode}
                             />
                         </div>
                         <span><small>Check your email for confirmation code.</small></span>
@@ -102,7 +107,7 @@ export default function SignupConfirmation(props) {
                         <LoaderButton
                             block
                             type="submit"
-                            className="btn btn-primary d-block my-3"
+                            className="btn btn-warning d-block my-3"
                             isLoading={isLoading}
                             disabled={!validateConfirmationForm()}
                         >

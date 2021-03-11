@@ -2,15 +2,15 @@
 // React required
 import React from "react";
 import { Route, Redirect, useLocation } from "react-router-dom";
-// Getting - user status (user login - true or false) - from useAppContext
+// Getting user status (user login - true or false) from useAppContext
 import { useAppContext } from "../libs/contextLib";
-// -------------- Application Begins Bellow ------------ //
+// -------------- Application Begins Bellow -------------- \\
 
-
-// Link available to Logged In users
+// Link available only to Logged In users
 // before (route):       <Route path="/account" exact component={Account}/>
-// after (custom route): <AuthenticatedRoute path="/account" exact component={Account} appProps={appProps} />
+// after (custom route): <AuthenticatedRoute path="/account" exact component={Account} />
 
+// Main Function
 export default function AuthenticatedRoute({ children, ...rest }) {
     const { pathname, search } = useLocation();
     const { isAuthenticated } = useAppContext();

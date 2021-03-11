@@ -4,8 +4,10 @@
     "\\src",
     "\\src\\components",
     "\\src\\containers",
-    "\\src\\css"
+    "\\src\\DummyData",
+    "\\src\\img",
+    "\\src\\libs"
   ],
-  "SelectedNode": "\\src\\components\\Navigation.js",
+  "SelectedNode": "\\src\\containers\\PostNew.js",
   "PreviewInSolutionExplorer": false
 }

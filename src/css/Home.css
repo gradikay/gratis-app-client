@@ -1,38 +1,9 @@
-/* 
-    Image source is set in src -> containers -> Home.js 
-*/
-#Home #Header {
-    height: calc(100vh - 60px);
-    background-size: cover;
-    background-attachment: fixed;
-    background-color:black;
+#Home #Header{
+    height:calc(100vh - 70px);
 }
-
-#Home #Header h1 {
-    font-size: 3.5rem;
-    text-shadow: 0 0 20px black;
+#Home h1 {
+    font-size: 40px;
 }
-
-#Home #SectionA h3 {
-    font-size: 3.5rem;
-}
-
-#Home #Header p {
-    font-size: 1.5rem;
-    text-shadow: 0 0 20px black;
-}
-
-#Home .card .overlay-bottom{
-    position: absolute;
-    bottom: 0;
-}
-
-#Home .card .card-img-overlay {
-    background-color: #00000014;
-}
-#Home a.link-card:hover {
-    box-shadow: 0 0 0px 6px #07284e;
-    display: block;
-    transition-timing-function: ease-in-out;
-    transition-duration: 400ms; 
+#Home .emoji {
+    font-size: 40px;
 }
